@@ -1,13 +1,22 @@
 package edu.neu.coe.info6205.util;
 
+import java.text.Collator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 public class SortUtils {
     private final Character paddingChar = ' ';
+    private String lang;
 
+    public SortUtils() {
+        lang = "English";
+    }
+    public void setChinese() {
+        lang = "Chinese";
+    }
     public Integer getMaxStringLength(List<String> xs) {
         if (xs == null || xs.isEmpty()) return -1;
         Integer maxStringLength = xs.get(0).length();
@@ -33,7 +42,13 @@ public class SortUtils {
 
     public Map<Character, Integer> getFrequencyTreeMap(List<String> xs, int l, int r, int d) {
         if (l > r) return null;
-        Map<Character, Integer> count = new TreeMap<>();
+        Map<Character, Integer> count;
+        if (lang.equals("Chinese")) {
+            count = new TreeMap<>((a, b) -> Collator.getInstance(Locale.CHINA).compare(a.toString(), b.toString()));
+        }
+        else {
+            count = new TreeMap<>();
+        }
         for (int i = l; i <= r; i++) {
             Character c = xs.get(i).charAt(d);
             if (count.containsKey(c)) count.put(c, count.get(c) + 1);
