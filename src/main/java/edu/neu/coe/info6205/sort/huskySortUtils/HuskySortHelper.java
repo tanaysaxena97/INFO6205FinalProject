@@ -1,14 +1,14 @@
 /*
   (c) Copyright 2018, 2019 Phasmid Software
  */
-package edu.neu.coe.huskySort.sort.huskySortUtils;
+package edu.neu.coe.info6205.sort.huskySortUtils;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
-import static edu.neu.coe.huskySort.sort.huskySortUtils.HuskyCoderFactory.*;
+import static edu.neu.coe.info6205.sort.huskySortUtils.HuskyCoderFactory.*;
 
 /**
  * Various utilities to help with HuskySort.

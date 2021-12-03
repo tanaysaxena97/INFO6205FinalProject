@@ -8,6 +8,19 @@ import java.util.Arrays;
 public interface Sort<X> extends GenericSort<X> {
 
     /**
+     * Method to prepare for sorting, invoked by the default implementation of sort(X[], boolean).
+     * The default method invokes init with the length of the array xs then makes a copy of the array if appropriate.
+     *
+     * @param xs       the original array to be sorted.
+     * @param makeCopy true if we need to work on a copy of the array.
+     * @return either the original or a copy of the array.
+     */
+    default X[] preSort(X[] xs, boolean makeCopy) {
+        init(xs.length);
+        return makeCopy ? Arrays.copyOf(xs, xs.length) : xs;
+    }
+
+    /**
      * Generic, non-mutating sort method which allows for explicit determination of the makeCopy option.
      *
      * @param xs       sort the array xs, returning the sorted result, leaving xs unchanged.
@@ -18,6 +31,17 @@ public interface Sort<X> extends GenericSort<X> {
         X[] result = makeCopy ? Arrays.copyOf(xs, xs.length) : xs;
         sort(result, 0, result.length);
         return result;
+    }
+
+    /**
+     * Method to clean up after sorting, invoked by the default implementation of sort(X[], boolean).
+     * The default method simply returns the sorted array.
+     *
+     * @param xs the sorted array.
+     * @return the sorted array.
+     */
+    default X[] postSort(X[] xs) {
+        return xs;
     }
 
     /**

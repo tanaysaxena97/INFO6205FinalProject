@@ -1,7 +1,7 @@
-package edu.neu.coe.huskySort.sort.huskySort;
+package edu.neu.coe.info6205.sort.huskySort;
 
-import edu.neu.coe.huskySort.sort.SortException;
-import edu.neu.coe.huskySort.util.LazyLogger;
+import edu.neu.coe.info6205.sort.SortException;
+import edu.neu.coe.info6205.util.LazyLogger;
 
 import java.io.*;
 import java.net.URL;
@@ -14,7 +14,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import static edu.neu.coe.huskySort.util.Utilities.formatWhole;
+import static edu.neu.coe.info6205.util.Utilities.formatWhole;
 
 /**
  * Singleton class HuskySortBenchmarkHelper

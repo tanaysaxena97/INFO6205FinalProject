@@ -169,6 +169,18 @@ public class BaseHelper<X extends Comparable<X>> implements Helper<X> {
         this.config = config;
     }
 
+
+    /**
+     * Constructor for explicit seed.
+     *
+     * @param description the description of this Helper (for humans).
+     * @param n           the number of elements expected to be sorted. The field n is mutable so can be set after the constructor.
+     * @param seed        the seed for the random number generator.
+     */
+    public BaseHelper(String description, int n, long seed) {
+        this(description, n, new Random(seed), null);
+    }
+
     /**
      * Constructor for explicit seed.
      *

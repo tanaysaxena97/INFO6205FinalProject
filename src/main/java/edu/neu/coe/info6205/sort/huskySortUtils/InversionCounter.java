@@ -1,7 +1,7 @@
 /*
   (c) Copyright 2018, 2019 Phasmid Software
  */
-package edu.neu.coe.huskySort.sort.huskySortUtils;
+package edu.neu.coe.info6205.sort.huskySortUtils;
 
 /**
  * Class to count inversions for an array of Xs.

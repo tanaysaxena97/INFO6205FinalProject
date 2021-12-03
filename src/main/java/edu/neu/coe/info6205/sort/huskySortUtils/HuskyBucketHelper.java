@@ -1,8 +1,8 @@
-package edu.neu.coe.huskySort.sort.huskySortUtils;
+package edu.neu.coe.info6205.sort.huskySortUtils;
 
-import edu.neu.coe.huskySort.bqs.Bag;
-import edu.neu.coe.huskySort.bqs.Bag_Array;
-import edu.neu.coe.huskySort.sort.Helper;
+import edu.neu.coe.info6205.bqs.Bag;
+import edu.neu.coe.info6205.bqs.Bag_Array;
+import edu.neu.coe.info6205.sort.Helper;
 
 import java.lang.reflect.Array;
 import java.math.BigInteger;

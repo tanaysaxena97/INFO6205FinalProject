@@ -1,4 +1,4 @@
-package edu.neu.coe.huskySort.sort.huskySortUtils;
+package edu.neu.coe.info6205.sort.huskySortUtils;
 
 /**
  * Class to combine the long codes for an array of objects with a determination of coding perfection.

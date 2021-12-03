@@ -24,10 +24,21 @@ public class Config {
      * @param value       the new value.
      * @return a new Config as described.
      */
-    public Config copy(String sectionName, String optionName, String value) {
+    /*public Config copy(String sectionName, String optionName, String value) {
         Config result = new Config(copyIni());
         Profile.Section section = result.ini.get(sectionName);
         section.put(optionName, value);
+        result.ini.replace(sectionName, section);
+        return result;
+    }*/
+    public Config copy(final String sectionName, final String optionName, final String value) {
+        final Ini ini = new Ini();
+        for (final Map.Entry<String, Profile.Section> entry : this.ini.entrySet())
+            for (final Map.Entry<String, String> x : entry.getValue().entrySet())
+                ini.put(entry.getKey(), x.getKey(), x.getValue());
+        final Config result = new Config(ini);
+        final Profile.Section section = result.ini.get(sectionName);
+        section.replace(optionName, value);
         result.ini.replace(sectionName, section);
         return result;
     }

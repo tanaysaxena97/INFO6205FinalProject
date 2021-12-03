@@ -1,7 +1,8 @@
-package edu.neu.coe.huskySort.sort.huskySortUtils;
+package edu.neu.coe.info6205.sort.huskySortUtils;
 
-import edu.neu.coe.huskySort.sort.BaseHelper;
-import edu.neu.coe.huskySort.sort.Helper;
+import edu.neu.coe.info6205.sort.BaseHelper;
+import edu.neu.coe.info6205.sort.Helper;
+import edu.neu.coe.info6205.util.Config;
 
 import java.util.Random;
 import java.util.function.Consumer;
@@ -217,6 +218,11 @@ public class HuskyHelper<X extends Comparable<X>> implements Helper<X> {
      */
     public String getDescription() {
         return helper.getDescription();
+    }
+
+    @Override
+    public Config getConfig() {
+        return null;
     }
 
     /**
