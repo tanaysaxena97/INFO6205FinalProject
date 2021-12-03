@@ -13,7 +13,9 @@ public class MSDRadixSortTest {
     public void sortTest1() {
         // test the sorted order
         List<String> input1 = new ArrayList<>(), input2;
+
         FileUtil fu = new FileUtil();
+        
         input1 = fu.readFile(Paths.get(System.getProperty("user.dir"),"src", "main", "resources", "englishStrings.txt").toString().replaceAll("%20", " "));
         input2 = new ArrayList<>(input1);
         input1 = (new MSDRadixSort()).sort(input1);
