@@ -8,6 +8,7 @@ import edu.neu.coe.info6205.sort.Helper;
 import edu.neu.coe.info6205.sort.SortWithHelper;
 import edu.neu.coe.info6205.util.Config;
 
+import java.io.IOException;
 import java.util.Arrays;
 
 public class InsertionSort<X extends Comparable<X>> extends SortWithHelper<X> {
@@ -59,20 +60,17 @@ public class InsertionSort<X extends Comparable<X>> extends SortWithHelper<X> {
      */
     public void sort(X[] xs, int from, int to) {
         final Helper<X> helper = getHelper();
-
-        // IMPLEMENTED
-//        System.out.println("Will sort sample array: " +  Arrays.toString(xs));
-
-
         // Insertion sort on smallest arrays
             for (int i = from; i < to; i++)
-                for (int j = i;
-                     j > from && helper.less(xs[j], xs[j-1]);
-                     j--) {
+                for (int j = i; j > from && helper.less(xs[j], xs[j-1]); j--) {
                     helper.swapStableConditional(xs, j);
                 }
             return;
 
+    }
+
+    public static <Y extends Comparable<Y>> void mutatingInsertionSort(Y[] ys) throws IOException {
+        new InsertionSort<Y>().mutatingSort(ys);
     }
 
     public static final String DESCRIPTION = "Insertion sort";

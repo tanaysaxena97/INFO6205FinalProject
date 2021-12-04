@@ -42,6 +42,25 @@ public interface Helper<X extends Comparable<X>> extends GenericHelper<X> {
     int compare(X v, X w);
 
     /**
+     * Method to perform a general swap, i.e. between xs[i] and xs[j]
+     *
+     * @param xs the array of X elements.
+     * @param i  the index of the lower of the elements to be swapped.
+     * @param j  the index of the higher of the elements to be swapped.
+     */
+    void swap(X[] xs, int i, int j);
+
+    /**
+     * Method to perform a stable swap, i.e. between xs[i] and xs[i-1]
+     *
+     * @param xs the array of X elements.
+     * @param i  the index of the higher of the adjacent elements to be swapped.
+     */
+    default void swapStable(X[] xs, int i) {
+        swap(xs, i - 1, i);
+    }
+
+    /**
      * Method to perform a stable swap, but only if xs[i] is less than xs[i-1], i.e. out of order.
      *
      * @param xs the array of elements under consideration

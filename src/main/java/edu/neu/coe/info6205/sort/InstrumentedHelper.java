@@ -19,6 +19,10 @@ public class InstrumentedHelper<X extends Comparable<X>> extends BaseHelper<X> {
 
     final static LazyLogger logger = new LazyLogger(InstrumentedHelper.class);
 
+    public static <Y extends Comparable<Y>> InstrumentedHelper<Y> getInstrumentedHelper(final Helper<Y> helper, final InstrumentedHelper<Y> alternative) {
+        return InstrumentedHelper.class.isAssignableFrom(helper.getClass()) ? (InstrumentedHelper<Y>) helper : alternative;
+    }
+
     public boolean instrumented() {
         return true;
     }
