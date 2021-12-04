@@ -23,6 +23,14 @@ public class FileUtil {
         return result;
     }
 
+    public String[] readFileAsArray(String path) {
+        return readFile(path).toArray(new String[0]);
+    }
+
+    public void writeArrayToFile(String[] objects, String outputPath) {
+        writeFile(Arrays.asList(objects), outputPath);
+    }
+
     public void writeFile(List<String> objects, String outputPath) {
         try {
             FileWriter fw = new FileWriter(outputPath);

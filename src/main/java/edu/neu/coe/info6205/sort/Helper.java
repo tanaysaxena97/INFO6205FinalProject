@@ -1,5 +1,8 @@
 package edu.neu.coe.info6205.sort;
 
+import java.util.Random;
+import java.util.function.Function;
+
 import static java.util.Arrays.binarySearch;
 
 /**
@@ -11,7 +14,12 @@ import static java.util.Arrays.binarySearch;
  *
  * @param <X>
  */
-public interface Helper<X extends Comparable<X>> extends GenericHelper<X> {
+public interface Helper<X extends Comparable<X>> {
+
+    /**
+     * @return true if this is an instrumented Helper.
+     */
+    boolean instrumented();
 
     /**
      * Compare elements i and j of xs within the subarray lo..hi
@@ -56,7 +64,7 @@ public interface Helper<X extends Comparable<X>> extends GenericHelper<X> {
      * @param xs the array of X elements.
      * @param i  the index of the higher of the adjacent elements to be swapped.
      */
-    default void swapStable(X[] xs, int i) {
+    default void swapStable(final X[] xs, final int i) {
         swap(xs, i - 1, i);
     }
 
@@ -68,10 +76,10 @@ public interface Helper<X extends Comparable<X>> extends GenericHelper<X> {
      * @param j  the index of the upper element.
      * @return true if there was an inversion (i.e. the order was wrong and had to be be fixed).
      */
-    default boolean swapConditional(X[] xs, int i, int j) {
+    default boolean swapConditional(final X[] xs, final int i, final int j) {
         final X v = xs[i];
         final X w = xs[j];
-        boolean result = v.compareTo(w) > 0;
+        final boolean result = v.compareTo(w) > 0;
         if (result) {
             // CONSIDER invoking swap
             xs[i] = w;
@@ -87,10 +95,10 @@ public interface Helper<X extends Comparable<X>> extends GenericHelper<X> {
      * @param i  the index of the upper element.
      * @return true if there was an inversion (i.e. the order was wrong and had to be be fixed).
      */
-    default boolean swapStableConditional(X[] xs, int i) {
+    default boolean swapStableConditional(final X[] xs, final int i) {
         final X v = xs[i];
         final X w = xs[i - 1];
-        boolean result = v.compareTo(w) < 0;
+        final boolean result = v.compareTo(w) < 0;
         if (result) {
             xs[i] = w;
             xs[i - 1] = v;
@@ -121,11 +129,21 @@ public interface Helper<X extends Comparable<X>> extends GenericHelper<X> {
      * @param xs the array of X elements, whose elements 0 thru i-1 MUST be sorted.
      * @param i  the index of the element to be swapped into the ordered array xs[0..i-1].
      */
-    default void swapIntoSorted(X[] xs, int i) {
+    default void swapIntoSorted(final X[] xs, final int i) {
         int j = binarySearch(xs, 0, i, xs[i]);
         if (j < 0) j = -j - 1;
         if (j < i) swapInto(xs, j, i);
     }
+
+    /**
+     * Copy the element at source[j] into target[i]
+     *
+     * @param source the source array.
+     * @param i      the target index.
+     * @param target the target array.
+     * @param j      the source index.
+     */
+    void copy(X[] source, int i, X[] target, int j);
 
     /**
      * TODO eliminate this method as it has been superseded by swapConditional. However, maybe the latter is a better name.
@@ -135,7 +153,7 @@ public interface Helper<X extends Comparable<X>> extends GenericHelper<X> {
      * @param i  the index of the lower of the elements to be swapped.
      * @param j  the index of the higher of the elements to be swapped.
      */
-    default void fixInversion(X[] xs, int i, int j) {
+    default void fixInversion(final X[] xs, final int i, final int j) {
         swapConditional(xs, i, j);
     }
 
@@ -146,7 +164,7 @@ public interface Helper<X extends Comparable<X>> extends GenericHelper<X> {
      * @param xs the array of X elements.
      * @param i  the index of the higher of the adjacent elements to be swapped.
      */
-    default void fixInversion(X[] xs, int i) {
+    default void fixInversion(final X[] xs, final int i) {
         swapStableConditional(xs, i);
     }
 
@@ -173,6 +191,20 @@ public interface Helper<X extends Comparable<X>> extends GenericHelper<X> {
      */
     void postProcess(X[] xs);
 
+    /**
+     * Method to generate an array of randomly chosen X elements.
+     *
+     * @param clazz the class of X.
+     * @param f     a function which takes a Random and generates a random value of X.
+     * @return an array of X of length determined by the current value according to setN.
+     */
+    X[] random(Class<X> clazz, Function<Random, X> f);
+
+    /**
+     * @return the description of this Helper.
+     */
+    String getDescription();
+
     default int cutoff() {
         return 7;
     }
@@ -185,11 +217,23 @@ public interface Helper<X extends Comparable<X>> extends GenericHelper<X> {
     void init(int n);
 
     /**
+     * Get the current value of N.
+     *
+     * @return the value of N.
+     */
+    int getN();
+
+    /**
+     * Close this Helper, freeing up any resources used.
+     */
+    void close();
+
+    /**
      * If instrumenting, increment the number of copies by n.
      *
      * @param n the number of copies made.
      */
-    default void incrementCopies(int n) {
+    default void incrementCopies(final int n) {
         // do nothing.
     }
 
@@ -198,7 +242,7 @@ public interface Helper<X extends Comparable<X>> extends GenericHelper<X> {
      *
      * @param n the number of copies made.
      */
-    default void incrementFixes(int n) {
+    default void incrementFixes(final int n) {
         // do nothing.
     }
 
@@ -208,12 +252,12 @@ public interface Helper<X extends Comparable<X>> extends GenericHelper<X> {
      * @param xs the array to be sorted.
      * @return the array after any pre-processing.
      */
-    default X[] preProcess(X[] xs) {
+    default X[] preProcess(final X[] xs) {
         // CONSIDER invoking init from here.
         return xs;
     }
 
-    default void registerDepth(int depth) {
+    default void registerDepth(final int depth) {
     }
 
     default int maxDepth() {

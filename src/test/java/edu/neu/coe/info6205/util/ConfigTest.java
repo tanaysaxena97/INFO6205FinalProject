@@ -7,7 +7,7 @@ import org.junit.Test;
 
 import java.io.IOException;
 
-import static edu.neu.coe.info6205.sort.InstrumentedHelper.HITS;
+//import static edu.neu.coe.info6205.sort.InstrumentedHelper.HITS;
 import static org.junit.Assert.*;
 
 public class ConfigTest {
@@ -65,7 +65,7 @@ public class ConfigTest {
         ini.put(sInstrumenting, COMPARES, instrumenting);
         ini.put(sInstrumenting, COPIES, instrumenting);
         ini.put(sInstrumenting, FIXES, instrumenting);
-        ini.put(sInstrumenting, HITS, instrumenting);
+//        ini.put(sInstrumenting, HITS, instrumenting);
         ini.put("huskyhelper", "countinteriminversions", interimInversions);
         return new Config(ini);
     }

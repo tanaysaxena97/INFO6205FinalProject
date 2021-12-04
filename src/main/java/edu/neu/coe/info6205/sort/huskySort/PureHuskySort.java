@@ -3,10 +3,12 @@ package edu.neu.coe.info6205.sort.huskySort;
 import edu.neu.coe.info6205.sort.huskySortUtils.Coding;
 import edu.neu.coe.info6205.sort.huskySortUtils.HuskyCoder;
 import edu.neu.coe.info6205.sort.huskySortUtils.HuskyCoderFactory;
-import edu.neu.coe.info6205.sort.huskySortUtils.HuskySortHelper;
-import edu.neu.coe.info6205.sort.elementary.InsertionSort;
+import edu.neu.coe.info6205.sort.simple.InsertionSort;
+import edu.neu.coe.info6205.util.FileUtil;
 import edu.neu.coe.info6205.util.LazyLogger;
 
+import java.nio.file.Paths;
+import java.text.Collator;
 import java.util.Arrays;
 import java.util.Collections;
 
@@ -27,12 +29,16 @@ public class PureHuskySort<X extends Comparable<X>> {
         final int m = 10000;
         logger.info("PureHuskySort.main: sorting " + N + " random alphabetic ASCII words " + m + " times");
         // Just for test purpose: this should take about 3 minutes
-        final PureHuskySort<String> sorter = new PureHuskySort<>(HuskyCoderFactory.asciiCoder, false, false);
-        for (int i = 0; i < m; i++) {
-            final String[] alphaBetaArray = HuskySortHelper.generateRandomAlphaBetaArray(N, 4, 9);
-            sorter.sort(alphaBetaArray);
-        }
-        logger.info("PureHuskySort.main: finished");
+//        final PureHuskySort<String> sorter = new PureHuskySort<>(HuskyCoderFactory.asciiCoder, false, false);
+//        for (int i = 0; i < m; i++) {
+//            final String[] alphaBetaArray = HuskySortHelper.generateRandomAlphaBetaArray(N, 4, 9);
+//            sorter.sort(alphaBetaArray);
+//        }
+//        logger.info("PureHuskySort.main: finished");
+        PureHuskySort<String> sorter = new PureHuskySort<>(HuskyCoderFactory.chineseEncoder, false, false);
+        String[] xs = (new FileUtil()).readFileAsArray(Paths.get(System.getProperty("user.dir"),"src", "main", "resources", "shuffledChinese.txt").toString()) ;
+        sorter.sort(xs);
+        (new FileUtil()).writeArrayToFile(xs, Paths.get(System.getProperty("user.dir"),"src", "main", "resources", "sortedChinese.txt").toString());
     }
 
     /**
@@ -54,8 +60,11 @@ public class PureHuskySort<X extends Comparable<X>> {
             return;
         if (useInsertionSort)
             new InsertionSort<X>().mutatingSort(xs);
-        else
-            Arrays.sort(xs);
+        else {
+            final Collator collator = huskyCoder.getCollator();
+            if (collator == null) Arrays.sort(xs);
+            else Arrays.sort(xs, collator);
+        }
     }
 
     /**
@@ -112,7 +121,7 @@ public class PureHuskySort<X extends Comparable<X>> {
     }
 
     // TEST
-    private void heapSort(final X[] objects, final long[] longs, final int from, final int to) {
+    private static <T extends Comparable<T>> void heapSort(final T[] objects, final long[] longs, final int from, final int to) {
         // CONSIDER removing these size checks. They haven't really been tested.
         if (to - from <= sizeThreshold + 1) {
             insertionSort(objects, longs, from, to);
@@ -129,9 +138,9 @@ public class PureHuskySort<X extends Comparable<X>> {
     }
 
     // TEST
-    private void downHeap(final X[] objects, final long[] longs, int i, final int n, final int lo) {
+    private static <T extends Comparable<T>> void downHeap(final T[] objects, final long[] longs, int i, final int n, final int lo) {
         final long d = longs[lo + i - 1];
-        final X od = objects[lo + i - 1];
+        final T od = objects[lo + i - 1];
         int child;
         while (i <= n / 2) {
             child = 2 * i;
@@ -145,7 +154,7 @@ public class PureHuskySort<X extends Comparable<X>> {
         objects[lo + i - 1] = od;
     }
 
-    void insertionSort(final X[] objects, final long[] longs, final int from, final int to) {
+    public static <T extends Comparable<T>> void insertionSort(final T[] objects, final long[] longs, final int from, final int to) {
         for (int i = from + 1; i < to; i++)
             if (OPTIMIZED)
                 swapIntoSorted(objects, longs, i);
@@ -163,13 +172,13 @@ public class PureHuskySort<X extends Comparable<X>> {
      * @param i     the index of one element to be swapped.
      * @param j     the index of the other element to be swapped.
      */
-    private void swap(final X[] xs, final long[] longs, final int i, final int j) {
+    private static <T extends Comparable<T>> void swap(final T[] xs, final long[] longs, final int i, final int j) {
         // Swap longs
         final long temp1 = longs[i];
         longs[i] = longs[j];
         longs[j] = temp1;
         // Swap xs
-        final X temp2 = xs[i];
+        final T temp2 = xs[i];
         xs[i] = xs[j];
         xs[j] = temp2;
     }
@@ -182,7 +191,7 @@ public class PureHuskySort<X extends Comparable<X>> {
      * @param longs the long array.
      * @param i     the index of the element to be moved.
      */
-    private void swapIntoSorted(final X[] xs, final long[] longs, final int i) {
+    private static <T extends Comparable<T>> void swapIntoSorted(final T[] xs, final long[] longs, final int i) {
         int j = binarySearch(longs, 0, i, longs[i]);
         if (j < 0) j = -j - 1;
         if (j < i) swapInto(xs, longs, j, i);
@@ -196,9 +205,9 @@ public class PureHuskySort<X extends Comparable<X>> {
      * @param i     the index of the element to be moved.
      * @param j     the index of the destination of that element.
      */
-    void swapInto(final X[] xs, final long[] longs, final int i, final int j) {
+    static <T extends Comparable<T>> void swapInto(final T[] xs, final long[] longs, final int i, final int j) {
         if (j > i) {
-            final X x = xs[j];
+            final T x = xs[j];
             System.arraycopy(xs, i, xs, i + 1, j - i);
             xs[i] = x;
             final long l = longs[j];

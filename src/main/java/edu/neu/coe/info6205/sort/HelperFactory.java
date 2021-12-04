@@ -1,11 +1,8 @@
 package edu.neu.coe.info6205.sort;
 
-import edu.neu.coe.info6205.sort.classic.ClassicHelper;
 import edu.neu.coe.info6205.util.Config;
 
-import java.util.Random;
-
-public class HelperFactory {
+public final class HelperFactory {
 
     /**
      * Factory method to create a Helper.
@@ -16,7 +13,7 @@ public class HelperFactory {
      * @param <X>         the underlying type.
      * @return a Helper<X></X>
      */
-    public static <X extends Comparable<X>> Helper<X> create(String description, int nElements, Config config) {
+    public static <X extends Comparable<X>> Helper<X> create(final String description, final int nElements, final Config config) {
         return create(description, nElements, config.isInstrumented(), config);
     }
 
@@ -30,22 +27,8 @@ public class HelperFactory {
      * @param <X>          the underlying type.
      * @return a Helper<X></X>
      */
-    public static <X extends Comparable<X>> Helper<X> create(String description, int nElements, boolean instrumented, Config config) {
-        return instrumented ? new InstrumentedHelper<>(description, nElements, config) : new BaseHelper<>(description, nElements, config);
-    }
-
-    /**
-     * Factory method to create a GenericHelper.
-     * At present, the only concrete extender of GenericHelper is ClassicHelper.
-     *
-     * @param description the description of the Helper.
-     * @param nElements   the number of elements to be sorted.
-     * @param config      the configuration.
-     * @param <X>         the underlying type.
-     * @return a ClassicHelper<X></X>
-     */
-    public static <X> GenericHelper<X> createGeneric(String description, int nElements, Config config) {
-        return new ClassicHelper<>(description, nElements, new Random(config.getLong("helper", "seed", System.currentTimeMillis())), config);
+    public static <X extends Comparable<X>> Helper<X> create(final String description, final int nElements, final boolean instrumented, final Config config) {
+        return instrumented ? new InstrumentedHelper<>(description, nElements, config) : new BaseHelper<>(description, nElements);
     }
 
 }

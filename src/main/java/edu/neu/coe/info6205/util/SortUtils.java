@@ -10,9 +10,12 @@ import java.util.stream.Collectors;
 public class SortUtils {
     private final Character paddingChar = ' ';
     private String lang;
+    private OrderMaster om;
+
 
     public SortUtils() {
         lang = "English";
+        om = new OrderMaster();
     }
     public void setChinese() {
         lang = "Chinese";
@@ -44,7 +47,7 @@ public class SortUtils {
         if (l > r) return null;
         Map<Character, Integer> count;
         if (lang.equals("Chinese")) {
-            count = new TreeMap<>((a, b) -> Collator.getInstance(Locale.CHINA).compare(a.toString(), b.toString()));
+            count = new TreeMap<>((a, b) -> om.compare(a, b));
         }
         else {
             count = new TreeMap<>();

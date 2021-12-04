@@ -3,6 +3,7 @@ package edu.neu.coe.info6205;
 import edu.neu.coe.info6205.util.FileUtil;
 import edu.neu.coe.info6205.util.SortUtils;
 
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -11,10 +12,16 @@ public class MSDRadixSort {
     private Integer maxStringLength;
     private List<String> aux;
     private SortUtils sortUtils;
+
     public List<String> sort(List<String> xs) {
+        return sort(xs, "English");
+    }
+
+    public List<String> sort(List<String> xs, String lang) {
         if (xs.size() == 0) return xs;
         aux = new ArrayList<>();
         sortUtils = new SortUtils();
+        if (lang.equals("Chinese")) sortUtils.setChinese();
         maxStringLength = sortUtils.getMaxStringLength(xs);
         for (int i = 0; i < xs.size(); i++) aux.add("");
         xs = sortUtils.padMSDStrings(xs);
@@ -60,9 +67,8 @@ public class MSDRadixSort {
 
     public static void main(String []args) {
         FileUtil fu = new FileUtil();
-        List<String> a = fu.readFile(System.getProperty("user.dir") + "\\src\\main\\resources\\englishStrings.txt");
-//        List<String> a = fu.readFile(System.getProperty("user.dir") + "\\src\\main\\resources\\shuffledChinese.txt");
-        a = (new MSDRadixSort().sort(a));
-        a.stream().forEach(System.out::println);
+        List<String> a = fu.readFile(Paths.get(System.getProperty("user.dir"),"src", "main", "resources", "shuffledChinese.txt").toString());
+        a = (new MSDRadixSort().sort(a, "Chinese"));
+        (new FileUtil()).writeFile(a, Paths.get(System.getProperty("user.dir"),"src", "main", "resources", "sortedChinese.txt").toString());
     }
 }
