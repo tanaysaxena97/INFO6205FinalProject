@@ -1,11 +1,14 @@
 package edu.neu.coe.info6205.sort;
 
+import com.ibm.icu.util.ChineseCalendar;
 import edu.neu.coe.info6205.util.FileUtil;
+import edu.neu.coe.info6205.util.OrderMaster;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.nio.file.Paths;
+import java.text.Collator;
 import java.util.*;
 
 public class MSDRadixSortTest {
@@ -36,6 +39,18 @@ public class MSDRadixSortTest {
         assertEquals(s1.size(), s2.size());
         for (String key: s1) {
             assertTrue(s2.contains(key));
+        }
+    }
+
+    @Test
+    public void sortTest3() {
+        FileUtil fu = new FileUtil();
+        List<String > xs = fu.readFile(Paths.get(System.getProperty("user.dir"),"src", "main", "resources", "shuffledChinese.txt").toString());
+        List<String > target = fu.readFile(Paths.get(System.getProperty("user.dir"),"src", "main", "resources", "sortedChinese.txt").toString());
+        xs = (new MSDRadixSort()).sort(xs, "Chinese");
+        OrderMaster om = new OrderMaster();
+        for (int i = 0; i < xs.size(); i++) {
+            assertEquals(target.get(i), xs.get(i));
         }
     }
 }

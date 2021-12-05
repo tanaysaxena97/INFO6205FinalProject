@@ -1,5 +1,6 @@
 package edu.neu.coe.info6205;
 
+import com.ibm.icu.text.Collator;
 import edu.neu.coe.info6205.sort.LSDRadixSort;
 import edu.neu.coe.info6205.sort.huskySort.PureHuskySort;
 import edu.neu.coe.info6205.sort.huskySortUtils.HuskyCoderFactory;
@@ -9,10 +10,10 @@ import edu.neu.coe.info6205.util.FileUtil;
 
 import java.nio.file.Paths;
 import java.sql.Time;
-import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 public class SortingBenchmark {
     private static MSDRadixSort msdRadixSort = new MSDRadixSort();
@@ -23,29 +24,53 @@ public class SortingBenchmark {
         return new ArrayList<>(source.subList(0, size - 1));
     }
 
+    private static List<String> expandNFold(List<String> list, int n) {
+        int m = list.size();
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                list.add(list.get(j));
+            }
+        }
+        return list;
+    }
+
     public static void trials() {
+        List<String> csvOutput = new ArrayList<>();
         FileUtil fu = new FileUtil();
         List<String> sourceStrings = fu.readFile(Paths.get(System.getProperty("user.dir"),"src", "main", "resources", "shuffledChinese.txt").toString());
-        for (int size = 500000; size <= 999998; size *= 2) {
+        sourceStrings = expandNFold(sourceStrings, 8);
+        List<String> sysInput = getStringList(sourceStrings, 500000);
+        long startTime = System.currentTimeMillis();
+        Collections.sort(sysInput, Collator.getInstance(Locale.CHINA));
+        long endTime = System.currentTimeMillis();
+        csvOutput.add("inputSize, LSD, MSD, husky, DPQS");
+        System.out.println("system warmup: " + Long.toString(endTime - startTime));
+        for (int size = 500000; size <= 8000000; size *= 2) {
+            StringBuilder row = new StringBuilder();
+            row.append(size + ",");
             List<String> msdInput = getStringList(sourceStrings, size);
             List<String> lsdInput = getStringList(sourceStrings, size);
             List<String> huskyInput = getStringList(sourceStrings, size);
-            long startTime = System.currentTimeMillis();
-            lsdRadixSort.sort(lsdInput);
-            long endTime = System.currentTimeMillis();
+            startTime = System.currentTimeMillis();
+            lsdRadixSort.sort(lsdInput, "Chinese");
+            endTime = System.currentTimeMillis();
             System.out.println("LSD: " + Long.toString(endTime - startTime));
+            row.append((endTime - startTime) + ",");
             startTime = System.currentTimeMillis();
             msdRadixSort.sort(msdInput, "Chinese");
             endTime = System.currentTimeMillis();
             System.out.println("MSD: " + Long.toString(endTime - startTime));
+            row.append((endTime - startTime) + ",");
             startTime = System.currentTimeMillis();
             sorter.sort(huskyInput.toArray(new String[0]));
             Collections.sort(huskyInput);
             endTime = System.currentTimeMillis();
             System.out.println("husky: " + Long.toString(endTime - startTime));
+            row.append((endTime - startTime) + ",");
 
-
+            csvOutput.add(row.toString());
         }
+        fu.writeFile(csvOutput, Paths.get(System.getProperty("user.dir"),"src", "main", "resources", "BenchmarkOutput.txt").toString());
     }
 
     public void testHuskySort(List<String> sourceString) {

@@ -1,7 +1,8 @@
 package edu.neu.coe.info6205.util;
 
-import com.ibm.icu.text.Collator;
+
 import java.nio.file.Paths;
+import java.text.Collator;
 import java.util.*;
 
 public class OrderMaster {
@@ -17,7 +18,6 @@ public class OrderMaster {
         tmp.stream().forEach(x -> {for(int i = 0; i < x.length(); i++) st.add(x.charAt(i));});
         List<Character> characters = new ArrayList<>();
         for (Character c: st) characters.add(c);
-//        characters = characters.stream().sorted(Collator.getInstance(Locale.CHINA)).collect(Collectors.toList());
         Collections.sort(characters, new Comparator<Character>() {
             @Override
             public int compare(Character o1, Character o2) {
@@ -28,17 +28,7 @@ public class OrderMaster {
         scoreMap.put(' ', 0);
     }
 
-    public Comparator<Character> cmp = new Comparator<Character>() {
-        @Override
-        public int compare(Character o1, Character o2) {
-            return scoreMap.get(o1).compareTo(scoreMap.get(o2));
-        }
-    };
-
     public int compare(Character o1, Character o2) {
-//        String[] h = {o1.toString() + " " + o2.toString()};
-
-//        (new FileUtil()).writeArrayToFile(h ,Paths.get(System.getProperty("user.dir"),"src", "main", "resources", "log.txt").toString());
         Integer a = scoreMap.get(o1);
         Integer b = scoreMap.get(o2);
         int x = a.compareTo(b);
