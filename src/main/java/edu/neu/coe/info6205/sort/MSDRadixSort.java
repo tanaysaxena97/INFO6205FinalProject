@@ -65,8 +65,9 @@ public class MSDRadixSort {
 
     public static void main(String []args) {
         FileUtil fu = new FileUtil();
-        List<String> a = fu.readFile(Paths.get(System.getProperty("user.dir"),"src", "main", "resources", "outputChinese.txt").toString());
+        List<String> a = fu.readFile(Paths.get(System.getProperty("user.dir"),"src", "main", "resources", "shuffledChinese.txt").toString());
         a = (new MSDRadixSort()).sort(a, "Chinese");
-        fu.writeFile(a, Paths.get(System.getProperty("user.dir"),"src", "main", "resources", "outputChinese.txt").toString());
+        List sample = a.subList(0, 99);
+        fu.writeFile(sample, Paths.get(System.getProperty("user.dir"),"src", "main", "resources", "sortingSample", "MSDSample.txt").toString());
     }
 }

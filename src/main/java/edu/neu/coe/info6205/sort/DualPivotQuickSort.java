@@ -15,9 +15,10 @@ public class DualPivotQuickSort {
 
     public static void main(String[] args) {
         FileUtil fu = new FileUtil();
-        List<String> a = fu.readFile(Paths.get(System.getProperty("user.dir"),"src", "main", "resources", "demo.txt").toString());
-        sort(a, "English");
-        fu.writeFile(a, Paths.get(System.getProperty("user.dir"),"src", "main", "resources", "result_file.txt").toString());
+        List<String> a = fu.readFile(Paths.get(System.getProperty("user.dir"),"src", "main", "resources", "shuffledChinese.txt").toString());
+        (new DualPivotQuickSort()).sort(a, "Chinese");
+        List sample = a.subList(0, 99);
+        fu.writeFile(sample, Paths.get(System.getProperty("user.dir"),"src", "main", "resources", "sortingSample", "DPQSSample.txt").toString());
     }
 
     public static void sort(List<String> stringList, String lang) {

@@ -9,8 +9,10 @@ import edu.neu.coe.info6205.util.LazyLogger;
 
 import java.nio.file.Paths;
 import java.text.Collator;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 import static java.util.Arrays.binarySearch;
 
@@ -24,21 +26,12 @@ import static java.util.Arrays.binarySearch;
 public class PureHuskySort<X extends Comparable<X>> {
 
     public static void main(final String[] args) {
-
-        final int N = 50000;
-        final int m = 10000;
-        logger.info("PureHuskySort.main: sorting " + N + " random alphabetic ASCII words " + m + " times");
-        // Just for test purpose: this should take about 3 minutes
-//        final PureHuskySort<String> sorter = new PureHuskySort<>(HuskyCoderFactory.asciiCoder, false, false);
-//        for (int i = 0; i < m; i++) {
-//            final String[] alphaBetaArray = HuskySortHelper.generateRandomAlphaBetaArray(N, 4, 9);
-//            sorter.sort(alphaBetaArray);
-//        }
-//        logger.info("PureHuskySort.main: finished");
         PureHuskySort<String> sorter = new PureHuskySort<>(HuskyCoderFactory.chineseEncoder, false, false);
         String[] xs = (new FileUtil()).readFileAsArray(Paths.get(System.getProperty("user.dir"),"src", "main", "resources", "shuffledChinese.txt").toString()) ;
         sorter.sort(xs);
-        (new FileUtil()).writeArrayToFile(xs, Paths.get(System.getProperty("user.dir"),"src", "main", "resources", "sortedChinese.txt").toString());
+        List<String> sample = new ArrayList<>();
+        for(int i = 0; i < 100; i++) sample.add(xs[i]);
+        (new FileUtil()).writeFile(sample, Paths.get(System.getProperty("user.dir"),"src", "main", "resources", "sortingSample", "PureHuskySample.txt").toString());
     }
 
     /**

@@ -52,8 +52,9 @@ public class LSDRadixSort {
 
     public static void main(String []args) {
         FileUtil fu = new FileUtil();
-        List<String> a = fu.readFile(Paths.get(System.getProperty("user.dir"),"src", "main", "resources", "englishStrings.txt").toString());
-        a = (new LSDRadixSort()).sort(a);//, "Chinese");
-        fu.writeFile(a, Paths.get(System.getProperty("user.dir"),"src", "main", "resources", "outputEnglish.txt").toString());
+        List<String> a = fu.readFile(Paths.get(System.getProperty("user.dir"),"src", "main", "resources", "shuffledChinese.txt").toString());
+        a = (new LSDRadixSort()).sort(a, "Chinese");
+        List sample = a.subList(0, 99);
+        fu.writeFile(sample, Paths.get(System.getProperty("user.dir"),"src", "main", "resources", "sortingSample", "LSDSample.txt").toString());
     }
 }
