@@ -20,7 +20,7 @@ public class DualPivotQuickSortTest {
     private final BaseHelper<String> helper = new BaseHelper<>("dummy helper");
 
     @Test
-    public void testSortString1() {
+    public void testDPQuickSortEnglishWords() {
         List<String> input1 = new ArrayList<>(), input2;
         FileUtil fu = new FileUtil();
         input1 = fu.readFile(Paths.get(System.getProperty("user.dir"),"src", "main", "resources", "demo.txt").toString().replaceAll("%20", " "));
@@ -33,7 +33,7 @@ public class DualPivotQuickSortTest {
     }
 
     @Test
-    public void sortTest2() {
+    public void testDPQuickSortChineseWords() {
         FileUtil fu = new FileUtil();
         List<String > xs = fu.readFile(Paths.get(System.getProperty("user.dir"),"src", "main", "resources", "shuffledChinese.txt").toString());
         List<String > target = fu.readFile(Paths.get(System.getProperty("user.dir"),"src", "main", "resources", "sortedChinese.txt").toString());
