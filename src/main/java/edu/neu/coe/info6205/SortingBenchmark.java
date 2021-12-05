@@ -1,15 +1,13 @@
 package edu.neu.coe.info6205;
 
-import com.ibm.icu.text.Collator;
+import edu.neu.coe.info6205.sort.DualPivotQuickSort;
 import edu.neu.coe.info6205.sort.LSDRadixSort;
 import edu.neu.coe.info6205.sort.huskySort.PureHuskySort;
 import edu.neu.coe.info6205.sort.huskySortUtils.HuskyCoderFactory;
-import edu.neu.coe.info6205.sort.huskySortUtils.SequenceEncoder_Collator;
 import edu.neu.coe.info6205.util.FileUtil;
-//import edu.neu.coe.info6205.sort.huskySort.
 
 import java.nio.file.Paths;
-import java.sql.Time;
+import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -19,6 +17,7 @@ public class SortingBenchmark {
     private static MSDRadixSort msdRadixSort = new MSDRadixSort();
     private static LSDRadixSort lsdRadixSort = new LSDRadixSort();
     private static PureHuskySort<String> sorter = new PureHuskySort<>(HuskyCoderFactory.chineseEncoder, false, false);
+    private static DualPivotQuickSort dpqs = new DualPivotQuickSort();
 
     private static List<String> getStringList(List<String> source, int size) {
         return new ArrayList<>(source.subList(0, size - 1));
@@ -51,21 +50,31 @@ public class SortingBenchmark {
             List<String> msdInput = getStringList(sourceStrings, size);
             List<String> lsdInput = getStringList(sourceStrings, size);
             List<String> huskyInput = getStringList(sourceStrings, size);
+            List<String> dpqsInput = getStringList(sourceStrings, size);
+
             startTime = System.currentTimeMillis();
             lsdRadixSort.sort(lsdInput, "Chinese");
             endTime = System.currentTimeMillis();
-            System.out.println("LSD: " + Long.toString(endTime - startTime));
+            System.out.println("LSD: " + (endTime - startTime));
             row.append((endTime - startTime) + ",");
+
             startTime = System.currentTimeMillis();
             msdRadixSort.sort(msdInput, "Chinese");
             endTime = System.currentTimeMillis();
-            System.out.println("MSD: " + Long.toString(endTime - startTime));
+            System.out.println("MSD: " + (endTime - startTime));
             row.append((endTime - startTime) + ",");
+
             startTime = System.currentTimeMillis();
             sorter.sort(huskyInput.toArray(new String[0]));
             Collections.sort(huskyInput);
             endTime = System.currentTimeMillis();
-            System.out.println("husky: " + Long.toString(endTime - startTime));
+            System.out.println("Husky: " + (endTime - startTime));
+            row.append((endTime - startTime) + ",");
+
+            startTime = System.currentTimeMillis();
+            dpqs.sort(dpqsInput, "Chinese");
+            endTime = System.currentTimeMillis();
+            System.out.println("DPQS: " + (endTime - startTime));
             row.append((endTime - startTime) + ",");
 
             csvOutput.add(row.toString());
@@ -77,7 +86,7 @@ public class SortingBenchmark {
         long startTime = System.currentTimeMillis();
 
         long endTime = System.currentTimeMillis();
-        System.out.println("MSD: " + Long.toString(endTime - startTime));
+        System.out.println("MSD: " + (endTime - startTime));
     }
 
     public static void main(String[] args) {

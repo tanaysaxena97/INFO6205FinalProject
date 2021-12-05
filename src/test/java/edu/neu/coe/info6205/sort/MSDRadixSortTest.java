@@ -1,6 +1,5 @@
 package edu.neu.coe.info6205.sort;
 
-import com.ibm.icu.util.ChineseCalendar;
 import edu.neu.coe.info6205.util.FileUtil;
 import edu.neu.coe.info6205.util.OrderMaster;
 import org.junit.Test;
@@ -8,7 +7,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.nio.file.Paths;
-import java.text.Collator;
 import java.util.*;
 
 public class MSDRadixSortTest {

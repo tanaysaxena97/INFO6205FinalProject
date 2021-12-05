@@ -25,20 +25,19 @@ public class MSDRadixSort {
         maxStringLength = sortUtils.getMaxStringLength(xs);
         for (int i = 0; i < xs.size(); i++) aux.add("");
         xs = sortUtils.padMSDStrings(xs);
-        xs = sort(xs, 0, xs.size() - 1, 0);
+        sort(xs, 0, xs.size() - 1, 0);
         return sortUtils.removeMSDPadding(xs);
     }
 
-    private List<String> sort(List<String> xs, int l, int r, int d) {
-        if (d >= maxStringLength) return xs;
-        List<Integer> indices = new ArrayList<>();
+    private void sort(List<String> xs, int l, int r, int d) {
+        if (d >= maxStringLength) return;
         // counting step
         Map<Character, Integer> count = sortUtils.getFrequencyTreeMap(xs, l, r, d);
 
         // TODO: additionally we can use an LinkedHashMap to store the sorted and counted frequencies from the map, and iterate over the in the future steps. (maybe)
         // TODO: use msd radix sort to sort buckets of strings having same lengths, and then use k-way merge of sorted lists https://leetcode.com/problems/merge-k-sorted-lists/
         // populate indices array for iteration
-        for (int i: count.values()) indices.add(i);
+        List<Integer> indices = new ArrayList<>(count.values());
 
         // cumulative sum step  ---  for i in range(1, n): a[i] += a[i-1]
         count = sortUtils.cumulativeSum(count);
@@ -46,7 +45,7 @@ public class MSDRadixSort {
         // populate the aux array from l to r
         for (int i = l; i <= r; i++) {
             Character c = xs.get(i).charAt(d);
-            Integer newIdx = l + count.get(c) - 1;
+            int newIdx = l + count.get(c) - 1;
             aux.set(newIdx, xs.get(i));
             count.put(c, count.get(c) - 1);
         }
@@ -58,11 +57,10 @@ public class MSDRadixSort {
 
         // recursive step
         int lo = l;
-        for (int i = 0; i < indices.size(); i++) {
-            this.sort(xs, lo, lo + indices.get(i) - 1, d + 1);
-            lo = lo + indices.get(i);
+        for (Integer index : indices) {
+            this.sort(xs, lo, lo + index - 1, d + 1);
+            lo = lo + index;
         }
-        return xs;
     }
 
     public static void main(String []args) {

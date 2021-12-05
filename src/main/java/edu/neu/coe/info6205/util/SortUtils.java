@@ -22,25 +22,23 @@ public class SortUtils {
     }
     public Integer getMaxStringLength(List<String> xs) {
         if (xs == null || xs.isEmpty()) return -1;
-        Integer maxStringLength = xs.get(0).length();
-        for (int i = 0; i < xs.size(); i++) {
-            maxStringLength = Math.max(maxStringLength, xs.get(i).length());
+        int maxStringLength = xs.get(0).length();
+        for (String x : xs) {
+            maxStringLength = Math.max(maxStringLength, x.length());
         }
         return maxStringLength;
     }
 
     public List<String> padMSDStrings(List<String> xs) {
         final Integer maxStringLength = getMaxStringLength(xs);
-        xs = xs.stream().map(currStr -> {
-            StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < maxStringLength - currStr.length(); i++) sb.append(paddingChar);
-            return currStr + sb.toString();
-        }).collect(Collectors.toList());
+        xs = xs.stream().map(currStr -> currStr +
+                String.valueOf(paddingChar).repeat(Math.max(0, maxStringLength - currStr.length())))
+                                            .collect(Collectors.toList());
         return xs;
     }
 
     public List<String> removeMSDPadding(List<String> xs) {
-        return xs.stream().map(curStr -> curStr.trim()).collect(Collectors.toList());
+        return xs.stream().map(String::trim).collect(Collectors.toList());
     }
 
     public Map<Character, Integer> getFrequencyTreeMap(List<String> xs, int l, int r, int d) {

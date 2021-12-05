@@ -49,10 +49,6 @@ public class FileUtil {
         FileUtil fu = new FileUtil();
 //        System.out.println("Present Project Directory : "+ System.getProperty("user.dir"));
         List<String> chinese = fu.readFile(System.getProperty("user.dir") + "\\src\\main\\resources\\shuffledChinese.txt");
-//        Set<Long> st = new HashSet<>();
-//        chinese.stream().sorted().forEach(x->{for(int i = 0; i < x.length(); i++) st.add(Long.valueOf(x.charAt(i)));});
-//        System.out.println("unique characters in data set: " + st.size());
-//        st.stream().sorted().forEach(System.out::println);
         Map<Integer, Integer> mp = new HashMap<>();
         chinese.stream().sorted().forEach(x->{
             if (mp.containsKey(x.length())) mp.put(x.length(), mp.get(x.length()) + 1);

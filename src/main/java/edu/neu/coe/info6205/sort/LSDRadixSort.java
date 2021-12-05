@@ -10,7 +10,6 @@ import java.util.Map;
 
 // n: input size, d: number of distinct elements, complexity - O(n + d*lg(d))
 public class LSDRadixSort {
-    private Integer maxStringLength;
     private List<String> aux;
     private SortUtils sortUtils;
 
@@ -23,16 +22,16 @@ public class LSDRadixSort {
         aux = new ArrayList<>();
         sortUtils = new SortUtils();
         if (lang.equals("Chinese")) sortUtils.setChinese();
-        maxStringLength = sortUtils.getMaxStringLength(xs);
+        Integer maxStringLength = sortUtils.getMaxStringLength(xs);
         for (int i = 0; i < xs.size(); i++) aux.add("");
         xs = sortUtils.padMSDStrings(xs);
         for (int d = maxStringLength - 1; d >= 0; d--) {
-            xs = sort(xs, d);
+            sort(xs, d);
         }
         return sortUtils.removeMSDPadding(xs);
     }
 
-    private List<String> sort(List<String> xs, int d) {
+    private void sort(List<String> xs, int d) {
         for (int i = 0; i < xs.size(); i++) aux.set(i, "");
         // counting step
         Map<Character, Integer> count = sortUtils.getFrequencyTreeMap(xs, 0, xs.size() - 1, d);
@@ -41,7 +40,7 @@ public class LSDRadixSort {
         // populate the aux array from l to r
         for (int i = xs.size() - 1; i >= 0; i--) {
             Character c = xs.get(i).charAt(d);
-            Integer newIdx = count.get(c) - 1;
+            int newIdx = count.get(c) - 1;
             aux.set(newIdx, xs.get(i));
             count.put(c, count.get(c) - 1);
         }
@@ -49,7 +48,6 @@ public class LSDRadixSort {
         for (int i = 0; i < xs.size(); i++) {
             xs.set(i, aux.get(i));
         }
-        return xs;
     }
 
     public static void main(String []args) {

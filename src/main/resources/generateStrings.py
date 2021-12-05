@@ -1,6 +1,6 @@
 import random
 word = ""
-for _ in range(8000000):
+for _ in range(2000000):
     ln = random.randint(4,20)
     s = ""
     for I in range(ln):
