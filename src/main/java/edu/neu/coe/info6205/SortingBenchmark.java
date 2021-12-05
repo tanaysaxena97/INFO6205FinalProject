@@ -55,26 +55,26 @@ public class SortingBenchmark {
             startTime = System.currentTimeMillis();
             lsdRadixSort.sort(lsdInput, "Chinese");
             endTime = System.currentTimeMillis();
-            System.out.println("LSD: " + (endTime - startTime));
+            System.out.println("\n  LSD time for " + size +" elements : " + (endTime - startTime));
             row.append((endTime - startTime) + ",");
 
             startTime = System.currentTimeMillis();
             msdRadixSort.sort(msdInput, "Chinese");
             endTime = System.currentTimeMillis();
-            System.out.println("MSD: " + (endTime - startTime));
+            System.out.println("  MSD time for " + size +" elements : " + (endTime - startTime));
             row.append((endTime - startTime) + ",");
 
             startTime = System.currentTimeMillis();
             sorter.sort(huskyInput.toArray(new String[0]));
             Collections.sort(huskyInput);
             endTime = System.currentTimeMillis();
-            System.out.println("Husky: " + (endTime - startTime));
+            System.out.println("Husky time for " + size +" elements : " + (endTime - startTime));
             row.append((endTime - startTime) + ",");
 
             startTime = System.currentTimeMillis();
             dpqs.sort(dpqsInput, "Chinese");
             endTime = System.currentTimeMillis();
-            System.out.println("DPQS: " + (endTime - startTime));
+            System.out.println(" DPQS time for " + size +" elements : " + (endTime - startTime));
             row.append((endTime - startTime) + ",");
 
             csvOutput.add(row.toString());
