@@ -1,5 +1,6 @@
 # Compiled class file
 *.class
+target/
 
 # Log file
 *.log
@@ -13,7 +14,6 @@
 # Package Files #
 *.jar
 *.war
-*.nar
 *.ear
 *.zip
 *.tar.gz
@@ -21,32 +21,28 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
-.idea/.gitignore
-.idea/compiler.xml
-.idea/jarRepositories.xml
-.idea/misc.xml
-.idea/runConfigurations.xml
-.idea/vcs.xml
-target/LSDStringSort-report
-target/Radixsort-report
-target/classes/3000-common-words.txt
-target/classes/BenchmarkOutput.txt
-target/classes/config.ini
-target/classes/demo.txt
-target/classes/eng-uk_web_2002_100K-sentences.txt
-target/classes/eng-uk_web_2002_100K-words.txt
-target/classes/eng-uk_web_2002_10K-sentences.txt
-target/classes/eng-uk_web_2002_1M-words.txt
-target/classes/generateStrings.py
-target/classes/log.txt
-target/classes/log4j.properties
-target/classes/outputChinese.txt
-target/classes/result_file.txt
-target/classes/rus-su_web_2015_10K-words.txt
-target/classes/shuffledChinese.txt
-target/classes/sortedChinese.txt
-target/classes/zho-simp-tw_web_2014_10K-sentences.txt
-target/classes/zho-simp-tw_web_2014_10K-words.txt
-target/test-classes/config.ini
-target/test-classes/edu/neu/coe/info6205/sort/counting/lsdsort/LSDStringSort.feature
-target/test-classes/edu/neu/coe/info6205/sort/counting/radixsort/RadixSort.feature
+
+# IDE files #
+*.iml
+.idea
+.DS_Store
+
+bin/*
+.classpath
+.project
+.settings
+
+# Only for the public repository
+#"Quizzes and Exams"/
+#/Quizzes and Exams/
+
+src/main/java/edu/neu/coe/info6205/sort/elementary/MergeSortDecisionTree\.java
+src/main/resources/sample\.kml
+
+tunnels\.kml
+
+NEU Tunnel System \(updated\)\.kml
+
+NEU Tunnel System latest\.kml
+
+*.kml
